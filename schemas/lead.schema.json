@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/jehanworld099-star/agentu/schemas/lead.schema.json",
+  "title": "Lead / Outreach Record",
+  "description": "One record per prospect for either sales track: copywriting client acquisition or agent-service self-promotion (system prompt §4 and §5).",
+  "type": "object",
+  "required": ["id", "track", "prospect_name", "status", "created_at"],
+  "properties": {
+    "id": { "type": "string" },
+    "track": {
+      "type": "string",
+      "enum": ["copywriting", "agent-service"]
+    },
+    "prospect_name": { "type": "string" },
+    "platform": {
+      "type": "string",
+      "enum": ["facebook", "instagram", "youtube", "other"]
+    },
+    "profile_url": { "type": "string" },
+    "qualified": { "type": "boolean" },
+    "score": { "type": "number", "minimum": 0, "maximum": 100 },
+    "reasoning": { "type": "string" },
+    "signals": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "weak_copy_examples for copywriting track, pain_signals for agent-service track."
+    },
+    "outreach_draft": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": [
+        "sourced",
+        "qualified",
+        "disqualified",
+        "pending_approval",
+        "contacted",
+        "interested",
+        "converted",
+        "not_interested"
+      ]
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "notes": { "type": "string" }
+  }
+}

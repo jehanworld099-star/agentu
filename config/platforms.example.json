@@ -1,0 +1,26 @@
+{
+  "_comment": "Copy this file to platforms.json and fill in real IDs. Never put secrets/tokens here — those belong in Make.com's connection store or a secret manager. This file only holds non-secret identifiers and behavior config.",
+  "business": {
+    "name": "",
+    "voice_guidelines": "",
+    "human_owner_notification_channel": "whatsapp"
+  },
+  "facebook": {
+    "page_ids": [],
+    "ad_account_id": ""
+  },
+  "instagram": {
+    "page_ids": []
+  },
+  "youtube": {
+    "channel_ids": []
+  },
+  "whatsapp": {
+    "business_phone_number_id": ""
+  },
+  "reporting": {
+    "cadence": "weekly",
+    "inactive_after_days": 7,
+    "underperforming_engagement_drop_pct": 30
+  }
+}

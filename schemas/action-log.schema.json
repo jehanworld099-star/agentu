@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/jehanworld099-star/agentu/schemas/action-log.schema.json",
+  "title": "Action Log Entry",
+  "description": "One record per action the agent takes, per the system prompt's 'Log every action taken (reply sent, ad launched, lead contacted) for review.'",
+  "type": "object",
+  "required": ["id", "timestamp", "action_type", "actor", "status"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique log entry id (uuid)."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "action_type": {
+      "type": "string",
+      "enum": [
+        "reply_sent",
+        "reply_holding_message_sent",
+        "escalation_needed",
+        "ad_campaign_drafted",
+        "ad_campaign_launched",
+        "ad_budget_adjusted",
+        "lead_contacted",
+        "lead_status_changed",
+        "report_generated",
+        "account_flagged"
+      ]
+    },
+    "actor": {
+      "type": "string",
+      "enum": ["agent", "human"],
+      "description": "Whether the agent took this action autonomously or a human approved/took it."
+    },
+    "platform": {
+      "type": "string",
+      "enum": ["facebook", "instagram", "youtube", "whatsapp", "internal"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["completed", "pending_approval", "escalated", "rejected", "failed"]
+    },
+    "reference": {
+      "type": "object",
+      "description": "Foreign keys into the relevant record, e.g. thread_id, campaign_id, lead id.",
+      "additionalProperties": true
+    },
+    "approval_threshold_applied": {
+      "type": ["string", "null"],
+      "description": "Which rule in docs/approval-thresholds.md gated this action, if any."
+    },
+    "summary": {
+      "type": "string",
+      "description": "Human-readable one-line summary of what happened."
+    },
+    "details": {
+      "type": "object",
+      "description": "Action-specific payload (e.g. reply text, campaign brief, lead score).",
+      "additionalProperties": true
+    }
+  }
+}
