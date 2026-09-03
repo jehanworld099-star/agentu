@@ -22,5 +22,16 @@
     "cadence": "weekly",
     "inactive_after_days": 7,
     "underperforming_engagement_drop_pct": 30
+  },
+  "growth_agent": {
+    "_comment": "Config for the ai-automation-client track (GROWTH_AGENT_SYSTEM_PROMPT.md). See docs/growth-agent/.",
+    "lead_enrichment_provider": "",
+    "sender_identity": {
+      "agency_name": "",
+      "physical_mailing_address": "",
+      "reply_to_opt_out_instructions": ""
+    },
+    "approved_outreach_countries": [],
+    "email_send_connection": ""
   }
 }
