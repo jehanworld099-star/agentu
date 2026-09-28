@@ -9,7 +9,7 @@
     "id": { "type": "string" },
     "track": {
       "type": "string",
-      "enum": ["copywriting", "agent-service"]
+      "enum": ["copywriting", "agent-service", "ai-automation-client"]
     },
     "prospect_name": { "type": "string" },
     "platform": {
@@ -17,6 +17,17 @@
       "enum": ["facebook", "instagram", "youtube", "other"]
     },
     "profile_url": { "type": "string" },
+    "website": { "type": "string" },
+    "country": {
+      "type": "string",
+      "description": "ISO 3166-1 alpha-2 country code of the prospect's business, used to gate Module 4 outreach against config/platforms.json growth_agent.approved_outreach_countries (ai-automation-client track)."
+    },
+    "email": { "type": "string", "format": "email" },
+    "email_source": {
+      "type": "string",
+      "enum": ["manual_import", "enrichment_provider", "prospect_website"],
+      "description": "How the email was obtained (ai-automation-client track). Never a value implying social-platform scraping — see docs/growth-agent/data-sourcing-policy.md. A record with no valid email_source does not proceed past Module 1."
+    },
     "qualified": { "type": "boolean" },
     "score": { "type": "number", "minimum": 0, "maximum": 100 },
     "reasoning": { "type": "string" },
@@ -25,14 +36,53 @@
       "items": { "type": "string" },
       "description": "weak_copy_examples for copywriting track, pain_signals for agent-service track."
     },
+    "audit_brief": {
+      "type": "object",
+      "description": "Client Diagnostics Brief from prompts/growth-agent/business-audit.md (ai-automation-client track only). See docs/growth-agent/architecture.md Module 2.",
+      "properties": {
+        "ad_status": { "type": "string", "enum": ["running", "not_running", "low_quality"] },
+        "ad_status_evidence": { "type": "string" },
+        "copywriting_gaps": { "type": "array", "items": { "type": "string" } },
+        "marketing_gaps": { "type": "array", "items": { "type": "string" } },
+        "contact_email_found": { "type": ["string", "null"] },
+        "overall_fit": { "type": "string", "enum": ["strong", "moderate", "weak"] },
+        "overall_fit_reasoning": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "solution_blueprint": {
+      "type": "object",
+      "description": "Output of prompts/growth-agent/solution-blueprint.md (ai-automation-client track only). See docs/growth-agent/architecture.md Module 3.",
+      "properties": {
+        "summary": { "type": "string" },
+        "modules": { "type": "array" },
+        "addresses_gaps": { "type": "array", "items": { "type": "string" } },
+        "estimated_build_complexity": { "type": "string", "enum": ["low", "medium", "high"] }
+      },
+      "additionalProperties": true
+    },
+    "hook_breakdown": {
+      "type": "array",
+      "description": "Per-line personalization justification for outreach_draft, shown to the human alongside the draft per the Intercept Rule (GROWTH_AGENT_SYSTEM_PROMPT.md Module 4).",
+      "items": {
+        "type": "object",
+        "properties": {
+          "line": { "type": "string" },
+          "grounded_in": { "type": "string" }
+        }
+      }
+    },
     "outreach_draft": { "type": "string" },
     "status": {
       "type": "string",
       "enum": [
         "sourced",
+        "audited",
+        "blueprint_ready",
         "qualified",
         "disqualified",
         "pending_approval",
+        "approved",
         "contacted",
         "interested",
         "converted",

@@ -1,5 +1,10 @@
 # Scenario blueprints
 
+> The `ai-automation-client` lead track (find-audit-blueprint-outreach-portfolio
+> pipeline) has its own blueprint set and README under
+> [`growth-agent/`](./growth-agent/README.md), implementing
+> [`GROWTH_AGENT_SYSTEM_PROMPT.md`](../GROWTH_AGENT_SYSTEM_PROMPT.md).
+
 Each `*.blueprint.json` file here is a minimal, schema-valid Make.com
 scenario blueprint — safe to import into Make.com as a starting canvas. They
 intentionally ship with an **empty flow**: none of them reference real
