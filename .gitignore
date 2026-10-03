@@ -1,3 +1,11 @@
 config/platforms.json
 .DS_Store
 node_modules/
+
+# video_editor
+video_editor/.env
+video_editor/projects/
+video_editor/logs/
+video_editor/__pycache__/
+video_editor/**/__pycache__/
+video_editor/.pytest_cache/
