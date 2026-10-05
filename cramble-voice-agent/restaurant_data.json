@@ -1,0 +1,103 @@
+{
+  "_help": "Edit this file to change what Emma knows. Keep the quotes and commas exactly as they are. Times use 24-hour format, e.g. \"20:00\" = 8 PM. After saving, restart the agent.",
+
+  "name": "Cramble Restaurant",
+  "address": "42 Harbour Street, Riverside, Springfield 10001",
+  "phone": "+1 555 010 2030",
+  "email": "hello@cramble-restaurant.com",
+  "website": "www.cramble-restaurant.com",
+  "timezone": "America/New_York",
+  "currency_word": "dollars",
+
+  "opening_hours": {
+    "monday": "closed",
+    "tuesday":   { "open": "12:00", "close": "22:00" },
+    "wednesday": { "open": "12:00", "close": "22:00" },
+    "thursday":  { "open": "12:00", "close": "22:00" },
+    "friday":    { "open": "12:00", "close": "23:00" },
+    "saturday":  { "open": "11:00", "close": "23:00" },
+    "sunday":    { "open": "11:00", "close": "21:00" }
+  },
+  "closed_dates": ["2026-12-25", "2027-01-01"],
+
+  "parking": "Free parking for 30 cars behind the restaurant, plus street parking on Harbour Street after 6 PM.",
+  "dress_code": "Smart casual. No beachwear or sports vests in the evening, please.",
+  "other_info": [
+    "Wheelchair accessible, with an accessible restroom.",
+    "High chairs and a kids menu are available.",
+    "Well-behaved dogs are welcome on the outdoor terrace.",
+    "Free Wi-Fi for guests."
+  ],
+
+  "table_booking": {
+    "tables_per_time_slot": 10,
+    "time_slot_minutes": 60,
+    "booking_interval_minutes": 30,
+    "last_booking_minutes_before_close": 60,
+    "max_group_size": 8,
+    "max_days_in_advance": 90
+  },
+
+  "events": {
+    "private_hall_name": "The Garden Room",
+    "private_hall_capacity": 60,
+    "deposit_percent": 25,
+    "deposit_note": "A 25 percent deposit secures the date. It is refundable up to 7 days before the event.",
+    "minimum_guests": 9,
+    "packages": [
+      {
+        "name": "Classic Celebration",
+        "price_per_person": 45,
+        "includes": "Three-course set menu, a welcome soft drink, table decorations, and a dedicated server."
+      },
+      {
+        "name": "Premium Party",
+        "price_per_person": 65,
+        "includes": "Welcome glass of prosecco, canapés, three-course menu with choice of mains, a custom cake, and balloon decoration."
+      },
+      {
+        "name": "Corporate Dinner",
+        "price_per_person": 80,
+        "includes": "Private Garden Room, four-course dinner, wine pairing, projector and microphone, and printed menus with your company name."
+      }
+    ],
+    "extras": [
+      { "name": "Custom celebration cake", "price": 40, "note": "Serves up to 20 people." },
+      { "name": "Balloon and flower decoration", "price": 60 },
+      { "name": "Live acoustic musician (2 hours)", "price": 250 }
+    ]
+  },
+
+  "menu": {
+    "Starters": [
+      { "name": "Crispy Calamari", "price": 12, "description": "Tender squid rings in a light, crunchy batter, fried golden and served with a zesty lemon-garlic aioli.", "tags": [] },
+      { "name": "Roasted Tomato Soup", "price": 9, "description": "Slow-roasted vine tomatoes blended silky smooth with a swirl of basil oil, served with warm sourdough.", "tags": ["vegetarian"] },
+      { "name": "Spicy Chicken Wings", "price": 13, "description": "Wings marinated overnight, roasted till sticky in our house chilli-honey glaze, with a cooling blue cheese dip.", "tags": ["spicy", "gluten-free"] },
+      { "name": "Burrata and Peach Salad", "price": 14, "description": "Creamy burrata with grilled peaches, rocket, toasted hazelnuts and a drizzle of aged balsamic.", "tags": ["vegetarian", "gluten-free"] },
+      { "name": "Garlic Prawns", "price": 15, "description": "Juicy king prawns sizzled in garlic butter, chilli and parsley, with crusty bread to mop up the juices.", "tags": ["spicy"] }
+    ],
+    "Mains": [
+      { "name": "Grilled Lamb Chops", "price": 24, "description": "Marinated overnight in garlic and rosemary, grilled till juicy inside with a smoky crust, served with creamy mash.", "tags": ["gluten-free"] },
+      { "name": "Cramble Beef Burger", "price": 18, "description": "A thick, juicy beef patty with aged cheddar, caramelised onions and house pickles in a toasted brioche bun, with skin-on fries.", "tags": [] },
+      { "name": "Pan-Seared Salmon", "price": 23, "description": "Crispy-skinned salmon on a bed of lemony crushed potatoes and green beans, finished with a light dill butter sauce.", "tags": ["gluten-free"] },
+      { "name": "Wild Mushroom Risotto", "price": 19, "description": "Creamy arborio rice slow-stirred with wild mushrooms, white wine and parmesan, topped with crispy sage.", "tags": ["vegetarian", "gluten-free"] },
+      { "name": "Chicken Tikka Masala", "price": 20, "description": "Chargrilled chicken in a rich, gently spiced tomato and cream sauce, with fluffy basmati rice and garlic naan.", "tags": ["spicy"] },
+      { "name": "Ribeye Steak", "price": 32, "description": "Ten ounces of grass-fed ribeye, cooked the way you like it, with peppercorn sauce and hand-cut chips.", "tags": ["gluten-free"] },
+      { "name": "Vegan Buddha Bowl", "price": 17, "description": "Roasted sweet potato, crispy chickpeas, quinoa, avocado and pickled red cabbage with a creamy tahini dressing.", "tags": ["vegetarian", "vegan", "gluten-free"] }
+    ],
+    "Desserts": [
+      { "name": "Sticky Toffee Pudding", "price": 9, "description": "Warm, moist date sponge soaked in buttery toffee sauce, with a scoop of vanilla ice cream.", "tags": ["vegetarian"] },
+      { "name": "Chocolate Lava Cake", "price": 10, "description": "A rich chocolate cake with a gooey molten centre, served warm with raspberry sorbet.", "tags": ["vegetarian"] },
+      { "name": "Lemon Tart", "price": 8, "description": "Crisp buttery pastry filled with a sharp, silky lemon curd and a dusting of icing sugar.", "tags": ["vegetarian"] },
+      { "name": "Mango Sorbet", "price": 7, "description": "Light and refreshing, made with ripe Alphonso mangoes.", "tags": ["vegetarian", "vegan", "gluten-free"] }
+    ],
+    "Drinks": [
+      { "name": "Fresh Lemonade", "price": 5, "description": "Freshly squeezed lemons with a hint of mint, lightly sweetened.", "tags": ["vegetarian", "vegan", "gluten-free"] },
+      { "name": "Mango Lassi", "price": 6, "description": "A creamy, chilled yoghurt and mango drink.", "tags": ["vegetarian", "gluten-free"] },
+      { "name": "House Red Wine (glass)", "price": 9, "description": "A smooth, fruity Merlot with soft plum notes.", "tags": ["vegetarian", "gluten-free"] },
+      { "name": "House White Wine (glass)", "price": 9, "description": "A crisp, refreshing Sauvignon Blanc.", "tags": ["vegetarian", "gluten-free"] },
+      { "name": "Craft Beer", "price": 7, "description": "A rotating local craft beer on tap. Ask your server what is pouring today.", "tags": [] },
+      { "name": "Espresso", "price": 3, "description": "A rich, double-shot espresso.", "tags": ["vegetarian", "vegan", "gluten-free"] }
+    ]
+  }
+}

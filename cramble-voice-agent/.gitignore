@@ -1,0 +1,24 @@
+# Secrets — never commit these
+.env
+.env.*
+!.env.example
+google-credentials.json
+*credentials*.json
+*service-account*.json
+*.pem
+*.key
+
+# Local booking data and backups (may contain guest phone numbers)
+data/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# OS / editors
+.DS_Store
+.vscode/
+.idea/

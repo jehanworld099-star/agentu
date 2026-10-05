@@ -88,3 +88,7 @@ config/
   prospect's own public website/the public Meta Ad Library — never from
   automated collection against LinkedIn/Instagram/Facebook/X's ToS. See
   `docs/growth-agent/data-sourcing-policy.md`.
+
+## Also in this repo
+
+- [`cramble-voice-agent/`](./cramble-voice-agent/) — "Emma", an AI voice host for Cramble Restaurant (table/event bookings, menu questions). See its README.

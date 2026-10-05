@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cramble — Talk to Emma</title>
+<style>
+  :root { --bg:#faf6f2; --card:#fff; --ink:#2b1d14; --muted:#7d6b5d; --accent:#a4522a; --accent-ink:#fff; --line:#eadfd5; --ok:#2f7d4f; --bad:#b3261e; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#1b1511; --card:#261d17; --ink:#f3e9e1; --muted:#b9a698; --accent:#d9824f; --accent-ink:#1b1511; --line:#3a2d24; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; min-height:100vh; display:grid; place-items:center; background:var(--bg); color:var(--ink);
+         font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; padding:16px; }
+  .card { width:100%; max-width:420px; background:var(--card); border:1px solid var(--line); border-radius:20px;
+          padding:32px 24px; text-align:center; }
+  h1 { margin:0 0 4px; font-size:26px; }
+  p.sub { margin:0 0 28px; color:var(--muted); }
+  .avatar { width:110px; height:110px; margin:0 auto 20px; border-radius:50%; display:grid; place-items:center;
+            background:var(--bg); border:2px solid var(--line); font-size:40px; font-weight:700; color:var(--accent);
+            transition: box-shadow .1s; }
+  button { width:100%; padding:16px; font-size:18px; font-weight:600; border:0; border-radius:12px; cursor:pointer;
+           background:var(--accent); color:var(--accent-ink); }
+  button.end { background:var(--bad); color:#fff; }
+  button:disabled { opacity:.6; cursor:wait; }
+  #status { margin-top:16px; min-height:24px; color:var(--muted); }
+  .tip { margin-top:24px; font-size:13px; color:var(--muted); line-height:1.5; }
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="avatar" id="avatar">E</div>
+  <h1>Cramble Restaurant</h1>
+  <p class="sub">Talk to Emma, our booking host</p>
+  <button id="btn">Start Call</button>
+  <div id="status">Ready when you are.</div>
+  <p class="tip">Use Chrome or Edge, allow the microphone, and wear headphones for the best result.<br>
+     Try: "Can I book a table for 4 this Friday at 8 PM?"</p>
+  <audio id="remote" autoplay></audio>
+</main>
+<script>
+const btn = document.getElementById("btn");
+const statusEl = document.getElementById("status");
+const avatar = document.getElementById("avatar");
+const remoteAudio = document.getElementById("remote");
+let pc = null, localStream = null, meterTimer = null;
+
+function setStatus(text) { statusEl.textContent = text; }
+
+function waitForIce(pc) {
+  if (pc.iceGatheringState === "complete") return Promise.resolve();
+  return new Promise(resolve => {
+    const done = () => { if (pc.iceGatheringState === "complete") { pc.removeEventListener("icegatheringstatechange", done); resolve(); } };
+    pc.addEventListener("icegatheringstatechange", done);
+    setTimeout(resolve, 3000); // don't wait forever
+  });
+}
+
+function startMeter(stream) {
+  // Makes Emma's circle glow while she is speaking.
+  const ctx = new AudioContext();
+  const analyser = ctx.createAnalyser();
+  ctx.createMediaStreamSource(stream).connect(analyser);
+  const data = new Uint8Array(analyser.frequencyBinCount);
+  meterTimer = setInterval(() => {
+    analyser.getByteFrequencyData(data);
+    const level = Math.min(40, data.reduce((a, b) => a + b, 0) / data.length);
+    avatar.style.boxShadow = `0 0 0 ${level / 2}px color-mix(in srgb, var(--accent) 35%, transparent)`;
+  }, 60);
+}
+
+async function startCall() {
+  btn.disabled = true;
+  setStatus("Asking for microphone…");
+  try {
+    localStream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+  } catch (e) {
+    setStatus("Microphone blocked. Click the lock icon in the address bar and allow the microphone.");
+    btn.disabled = false;
+    return;
+  }
+  setStatus("Connecting to Emma…");
+  pc = new RTCPeerConnection({ iceServers: [{ urls: "stun:stun.l.google.com:19302" }] });
+  pc.ontrack = (e) => {
+    if (e.track.kind !== "audio") return;
+    remoteAudio.srcObject = e.streams[0] || new MediaStream([e.track]);
+    startMeter(remoteAudio.srcObject);
+  };
+  pc.onconnectionstatechange = () => {
+    if (pc && pc.connectionState === "connected") setStatus("Connected — say hello!");
+    if (pc && ["failed", "disconnected", "closed"].includes(pc.connectionState)) endCall("Call ended.");
+  };
+  pc.createDataChannel("chat", { ordered: true });
+  pc.addTransceiver(localStream.getAudioTracks()[0], { direction: "sendrecv" });
+  pc.addTransceiver("video", { direction: "sendrecv" });
+
+  try {
+    await pc.setLocalDescription(await pc.createOffer());
+    await waitForIce(pc);
+    const res = await fetch("/api/offer", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sdp: pc.localDescription.sdp, type: pc.localDescription.type }),
+    });
+    if (!res.ok) throw new Error("Server said " + res.status);
+    await pc.setRemoteDescription(await res.json());
+    btn.textContent = "End Call";
+    btn.classList.add("end");
+    btn.disabled = false;
+  } catch (e) {
+    console.error(e);
+    endCall("Could not connect. Is the server running? (" + e.message + ")");
+  }
+}
+
+function endCall(message) {
+  if (meterTimer) clearInterval(meterTimer);
+  avatar.style.boxShadow = "none";
+  if (pc) { pc.getSenders().forEach(s => s.track && s.track.stop()); pc.close(); pc = null; }
+  if (localStream) { localStream.getTracks().forEach(t => t.stop()); localStream = null; }
+  btn.textContent = "Start Call";
+  btn.classList.remove("end");
+  btn.disabled = false;
+  setStatus(message || "Call ended. Thanks for testing!");
+}
+
+btn.addEventListener("click", () => (pc ? endCall() : startCall()));
+</script>
+</body>
+</html>

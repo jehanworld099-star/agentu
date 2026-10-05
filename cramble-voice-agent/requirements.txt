@@ -1,0 +1,11 @@
+# Voice framework + the AI services we use (Groq, Cartesia), voice detection (Silero), browser calls (WebRTC)
+pipecat-ai[groq,cartesia,silero,webrtc,websocket]>=0.0.80,<0.1
+# Web server
+fastapi>=0.110
+uvicorn[standard]>=0.29
+# Google Sheets
+gspread>=6.0
+google-auth>=2.20
+# Settings + secure connections
+python-dotenv>=1.0
+certifi
